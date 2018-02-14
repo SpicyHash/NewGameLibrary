@@ -7,7 +7,7 @@ var MongoClient = require('mongodb').MongoClient;
 var passport = require('passport');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
-var url = "mongodb://localhost:27017/";
+var url = "mongodb://Elijah:deangelo@ds031632.mlab.com:31632/gameslibrary";
 
 var app = express();
 
@@ -48,7 +48,7 @@ passport.use(new LocalStrategy({
         MongoClient.connect(url, function(err, db){
             if(err) throw err;
 
-            var dbObj = db.db("users");
+            var dbObj = db.db("gameslibrary");
 
             dbObj.collection("users").findOne({username:username}, function(err, results){
                 if(results.password === password){
@@ -79,7 +79,7 @@ app.get('/logout', function(req, res){
 app.get("/", ensureAuthenticated, function(req, response){
     MongoClient.connect(url, function(err, db){
         if(err) throw err;
-        var dbObj = db.db("games");
+        var dbObj = db.db("gameslibrary");
 
         dbObj.collection("games").find().toArray(function(err, res){
             console.log("Site served!");
@@ -106,7 +106,7 @@ app.post("/new-entry", function(req, res){
     MongoClient.connect(url, function(err, db){
         if(err) throw err;
 
-        var dbObj = db.db("games");
+        var dbObj = db.db("gameslibrary");
 
         dbObj.collection("games").save(req.body, function(err, result){
             console.log("Data saved!");
@@ -121,7 +121,7 @@ app.post("/sign-up", function(request, response){
     console.log(request.body);
      MongoClient.connect(url, function(err, db){
         if(err) throw err;
-        var dbObj = db.db("users");
+        var dbObj = db.db("gameslibrary");
 
         var user = {
             username: request.body.username,
